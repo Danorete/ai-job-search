@@ -1,44 +1,37 @@
 # Support Score data extracts
 
-Target outputs for the partner communication app:
+Data behind the partner communication app's Support Score formula.
 
-| File | Status |
-| --- | --- |
-| `symptom_weights.csv` | not yet produced |
-| `phase_multipliers.csv` | not yet produced |
-| `strategies.csv` | not yet produced |
-| `SOURCES.md` | not yet produced |
-| `validate.py` | done and tested |
-
-## Why the CSVs are absent
-
-Extraction is blocked on source URLs. The brief supplied two placeholders
-rather than repository links. The two org pages that did come through were
-enumerated in full and neither contains any file mentioning endometriosis or
-PCOS/PMOS:
-
-* `github.com/Open-Athena` (47 repositories) is machine learning
-  infrastructure plus genomic and protein language models.
-* `github.com/Biohub` (12 repositories) is protein models, CryoET, and
-  immunology.
-* `github.com/czbiohub-sf` (131 repositories) was also checked in case it was
-  the intended Biohub. Single cell transcriptomics and microscopy.
-
-No rows were generated, because with no sources every row would be an
-invented number carrying a `source_file` value pointing at a file that does
-not exist. Real source URLs are needed before Step 2 can run.
-
-## validate.py
-
-Loads all three CSVs with pandas and checks that required columns exist and
-are non empty, that prevalence and impact fall in 0 to 1, that weight equals
-prevalence times impact, that multipliers are plausible, that `cycle_phase`,
-`score_band`, and `evidence_level` use only the allowed vocabulary, and that
-every row carries provenance. Prints a row count by condition and a count of
-rows flagged ASSUMPTION. Exits non zero on any failure.
+| File | Rows | Purpose |
+| --- | --- | --- |
+| `symptom_weights.csv` | 12 | Per symptom prevalence, impact and weight |
+| `phase_multipliers.csv` | 8 | Cycle phase adjustment per condition |
+| `strategies.csv` | 10 | Comfort strategies rewritten as partner actions |
+| `SOURCES.md` | | Licences, derivations, assumptions, gaps |
+| `build.py` | | Regenerates all three CSVs from verified source values |
+| `validate.py` | | Schema, range and provenance checks |
 
 ```
-python3 data/validate.py
+python3 data/build.py      # regenerate
+python3 data/validate.py   # check
 ```
 
-Requires pandas.
+Both require pandas for validation; `build.py` uses only the standard library.
+
+## Sources
+
+Two peer reviewed studies, both CC BY 4.0, both cleared for reuse:
+
+* Volpi and Konig (2026), Women's Health 22, doi:10.1177/17455057261462827
+* Armour et al. (2019), BMC Complement Altern Med 19:17, doi:10.1186/s12906-019-2431-x
+
+Every derivation is documented in `SOURCES.md` and implemented in `build.py`
+rather than done by hand, so the arithmetic is auditable.
+
+## Known limits
+
+Read `SOURCES.md` before presenting any of this. In short: there is no PMOS
+data in either source, most symptom weights describe menstruating people in
+general rather than endometriosis specifically, and two of the four cycle
+phases reuse a value because the source measured three phases rather than
+four.
