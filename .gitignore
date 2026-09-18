@@ -72,3 +72,6 @@ upskill/*.md
 .agents/**/node_modules/
 .agents/**/*.log
 .agents/usage/
+
+# Cloned upstream sources for the Support Score extract
+raw/
