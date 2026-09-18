@@ -33,6 +33,21 @@ VOLPI = "Volpi & Konig 2026, Women's Health 22, doi:10.1177/17455057261462827"
 VOLPI_F = "volpi-konig-2026-symptoms-and-distress-across-the-menstrual-cycle.pdf"
 ARMOUR = "Armour et al. 2019, BMC Complement Altern Med 19:17, doi:10.1186/s12906-019-2431-x"
 ARMOUR_F = "s12906-019-2431-x.pdf"
+BEGUM = "Begum, Vellapandian & Mohan 2024, Future Science OA 10(1):2430878, doi:10.1080/20565623.2024.2430878"
+BEGUM_F = "examining-symptom-and-quality-of-life-in-pcos.pdf"
+
+# Begum Table 3 records how many respondents with each symptom rated their
+# overall quality of life excellent / very good / good / fair / poor. Those
+# ordinal bands are mapped onto an evenly spaced 0 to 1 burden scale so the
+# impact column stays comparable across symptoms.
+QOL_BURDEN = {"excellent": 0.0, "very good": 0.25, "good": 0.5, "fair": 0.75, "poor": 1.0}
+
+
+def qol_impact(counts):
+    """counts = (excellent, very good, good, fair, poor) -> mean burden 0 to 1."""
+    bands = list(QOL_BURDEN.values())
+    total = sum(counts)
+    return round(sum(c * b for c, b in zip(counts, bands)) / total, 3)
 
 
 def row(**kw):
@@ -95,6 +110,49 @@ for name, prev, mean_distress, phase, detail in ENDO:
         notes=(f"ASSUMPTION on prevalence: the paper gives no occurrence rate for "
                f"the endometriosis subgroup, so the whole-sample {phase} rate is "
                f"carried over. Impact is measured ({mean_distress}/3). {detail}"),
+    ))
+
+# PMOS symptoms, from Begum Table 2 (prevalence) and Table 3 (quality of life).
+# Excluded from this set and why:
+#   diabetes, hypertension, hyperandrogenism, insulin resistance - clinical and
+#     laboratory diagnoses, outside the non-medical scope of this project
+#   infertility, miscarriages - reproductive outcomes rather than daily symptoms,
+#     and not appropriate content for a partner-facing support card
+#   obesity - derived from BMI rather than experienced directly; self-reported
+#     weight gain is carried instead
+PMOS_SYMPTOMS = [
+    ("irregular menstruation", 79, (3, 11, 18, 31, 11), None, 0.0064,
+     "Combines amenorrhoea, oligomenorrhoea and menorrhagia rows. NOTE: those "
+     "rows sum to 74 in Table 3 but to 79 in Table 2, so the paper's own tables "
+     "do not reconcile here."),
+    ("hirsutism", 71, (4, 11, 38, 12, 6), 39.8, 0.6194,
+     "Mean mental component score 39.8 against 60.7 for a healthy woman. The "
+     "quality of life difference was NOT statistically significant (p=.6194)."),
+    ("acne", 67, (4, 11, 37, 10, 5), 42.3, 0.6168,
+     "Mean mental component score 42.3 against 60.7 for a healthy woman. The "
+     "quality of life difference was NOT statistically significant (p=.6168)."),
+    ("weight gain", 63, (4, 10, 35, 9, 5), None, 0.5663,
+     "Self-reported weight gain over the previous three months. NOTE: the paper "
+     "prints this as 53.33% in the text and 58.33% in Table 2; 63 of 108 is "
+     "58.33%, so the text appears to carry a typo. Not statistically "
+     "significant (p=.5663)."),
+]
+
+N_PMOS = 108
+for name, n_with, counts, mcs, p_value, detail in PMOS_SYMPTOMS:
+    prevalence = round(n_with / N_PMOS, 3)
+    impact = qol_impact(counts)
+    symptom_rows.append(row(
+        condition="PMOS",
+        symptom=name,
+        prevalence=prevalence,
+        impact=impact,
+        weight=round(prevalence * impact, 4),
+        source_repo=BEGUM,
+        source_file=f"{BEGUM_F} Table 2 and Table 3",
+        notes=(f"Prevalence {n_with}/108. ASSUMPTION on impact: the paper reports "
+               f"ordinal quality of life bands, not a 0 to 1 score, so bands are "
+               f"mapped evenly (excellent 0.0 to poor 1.0) and averaged. {detail}"),
     ))
 
 # ------------------------------------------------------------------ phases

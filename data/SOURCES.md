@@ -38,6 +38,31 @@ were taken from the published version.
   December 2017 through endometriosis advocacy groups on social media.
 * **Used for:** `strategies.csv` (all rows).
 
+### 3. Begum, Vellapandian and Mohan (2024)
+
+* **Title:** Examining symptom and quality of life in polycystic ovarian
+  syndrome: a web based cross sectional study
+* **Journal:** Future Science OA, 10(1):2430878
+* **DOI:** 10.1080/20565623.2024.2430878
+* **Licence:** Creative Commons Attribution **NonCommercial** 4.0 (CC BY-NC).
+  Verified from the licence statement on page 1. **Reuse allowed for non
+  commercial purposes only.** See the licence warning below.
+* **Sample:** N = 108 working women of reproductive age in Tamil Nadu, India,
+  surveyed online January to May 2020. PCOS was self reported against
+  Rotterdam criteria. Non working women were excluded by design.
+* **Used for:** the four PMOS rows in `symptom_weights.csv`.
+
+## Licence warning
+
+The first two sources are CC BY and place no restriction on commercial use.
+The third is CC BY-**NC**. Because the PMOS rows are derived from it, **the
+combined dataset as it stands is non commercial only.**
+
+This is fine for a hackathon demo. It is not fine for a product. If this ever
+ships commercially, every PMOS row has to be re-sourced from a permissively
+licensed study, or licensed directly from the publisher. The condition column
+makes the affected rows easy to isolate.
+
 ## How each number was derived
 
 ### symptom_weights.csv
@@ -51,6 +76,18 @@ were taken from the published version.
 Volpi reports only the five most distressing symptoms per phase, so each
 symptom carries the values from the phase where it appears. The phase used
 is recorded in the `notes` column of every row.
+
+For the four PMOS rows, prevalence is the count of affected respondents over
+108 (Begum Table 2). Impact uses Begum Table 3, which records how many
+respondents with each symptom rated their overall quality of life excellent,
+very good, good, fair or poor. Those five ordinal bands are mapped onto an
+evenly spaced 0 to 1 burden scale and averaged. That even spacing is an
+assumption; the paper supplies no interval scale.
+
+Where the paper also reports a mental component score (hirsutism 39.8, acne
+42.3, obesity 41.5, against 60.7 for a healthy woman), it agrees with the
+ordinal method on the ordering of hirsutism against acne, which is a partial
+check on the mapping.
 
 ### phase_multipliers.csv
 
@@ -75,7 +112,7 @@ high rating on their own.
 
 ## Assumptions
 
-Ten rows carry an `ASSUMPTION` flag.
+Fourteen rows carry an `ASSUMPTION` flag.
 
 | Where | Assumption |
 | --- | --- |
@@ -84,6 +121,7 @@ Ten rows carry an `ASSUMPTION` flag.
 | `phase_multipliers.csv`, luteal | The study measured a **premenstrual** window, which is the late luteal phase only. Applying it across the whole luteal phase likely overstates days 16 to 22. |
 | `phase_multipliers.csv`, all 4 PMOS rows | No source covers PMOS cycle variation. Set to the neutral 1.0. |
 | `symptom_weights.csv`, 3 endometriosis rows | The paper reports subgroup distress means but no subgroup occurrence rate, so prevalence is carried over from the whole sample. The impact values are measured, not assumed. |
+| `symptom_weights.csv`, 4 PMOS rows | Quality of life is reported as five ordinal bands. Mapping them onto an evenly spaced 0 to 1 scale assumes equal distance between bands, which the paper does not establish. Prevalence is measured, not assumed. |
 
 One further judgement, applied but not flagged per row: the endometriosis
 phase multipliers use whole sample phase means. This is defensible rather
@@ -96,35 +134,56 @@ significant interaction in a small subgroup may simply be underpowered.
 
 ## Conflicts
 
-None. The two sources cover different questions (symptom distress across the
-cycle, and self management strategy use) and do not overlap on any value, so
-there was nothing to reconcile.
+**Between sources: none.** The three studies cover different questions and
+different populations, and do not overlap on any single value, so there was
+nothing to reconcile between them.
+
+**Within Begum (2024): two internal inconsistencies**, both recorded in the
+`notes` column of the affected rows.
+
+1. Weight gain over the previous three months is printed as 63 (53.33%) in
+   the body text and 63 (58.33%) in Table 2. Since 63 of 108 is 58.33%, the
+   body text appears to carry a typo. The extract uses 58.33%.
+2. The menstrual flow rows in Table 3 sum to 74 respondents, while Table 2
+   reports 79 with irregular menstruation. The acne, hirsutism, obesity and
+   weight gain rows all reconcile exactly, so the discrepancy is confined to
+   the menstrual flow breakdown.
 
 ## Gaps
 
-1. **No PMOS data at all.** Neither source covers polyendocrine metabolic
-   ovarian syndrome. `symptom_weights.csv` has zero PMOS rows and
-   `strategies.csv` has zero PMOS rows. The four PMOS rows in
-   `phase_multipliers.csv` are neutral placeholders. Half the app's stated
-   scope is currently unsupported by evidence.
+1. **PMOS has symptom weights but nothing else.** There are four PMOS rows in
+   `symptom_weights.csv` and zero in `strategies.csv`. The four PMOS rows in
+   `phase_multipliers.csv` are still neutral 1.0 placeholders, because no
+   source in this set measures PMOS symptoms by cycle phase. PMOS cycles are
+   frequently anovulatory, so those phase boundaries may not be well defined
+   in the first place. The app currently has no evidence backed partner
+   action for a PMOS user.
 
-2. **Symptom weights are general population, not endometriosis specific.**
-   Nine of the twelve rows describe menstruating people in general. Only
-   three rows are endometriosis specific, and they come from a post hoc,
-   non preregistered sensitivity analysis. One of those three (abdominal
-   pain in the menstrual phase) did not reach statistical significance
+2. **The PMOS quality of life differences are mostly not statistically
+   significant.** Only menstrual flow (p = .0064), diabetes (p = .0478) and
+   night shift work (p = .0400) reached significance in Begum Table 3. Acne
+   (p = .6168), hirsutism (p = .6194) and weight gain (p = .5663) did not. The
+   impact values for those three symptoms are real measurements, but the
+   study cannot show they differ from chance. Every PMOS row is rated `low`
+   evidence for this reason.
+
+3. **Each condition rests on a single narrow study.** PMOS comes from 108
+   working women in one Indian state, with non working women excluded by
+   design. Endometriosis strategies come from 484 self selected Australian
+   women recruited through advocacy groups. Neither generalises cleanly, and
+   nothing here is rated `high` evidence.
+
+4. **Symptom weights are still mostly general population.** Nine of sixteen
+   rows describe menstruating people in general rather than either target
+   condition. The three endometriosis rows come from a post hoc,
+   non preregistered analysis, and one of them did not reach significance
    (p = .057).
 
-3. **Strategy evidence is narrow.** Every strategy row traces to one survey
-   of 484 self selected Australian women recruited through advocacy groups,
-   relying on recall. That population is more engaged and probably more
-   severely affected than average. The relief scores are what those women
-   reported, not trial results.
+5. **Four cycle phases were forced out of three.** The source measured
+   menstrual, premenstrual and intermenstrual. Follicular and ovulatory share
+   a reused value, and the luteal multiplier is really a premenstrual one, so
+   it likely overstates days 16 to 22.
 
-4. **Four phases were forced out of three.** The source measured menstrual,
-   premenstrual and intermenstrual. The schema wants menstrual, follicular,
-   ovulatory and luteal. Two of the four phases carry a reused value.
-
-5. **Pain relief is not symptom impact.** Armour's 0 to 10 scale measures how
-   much a strategy relieved pain. It does not measure how disruptive a
-   symptom is. The two must not be mixed in the Support Score formula.
+6. **Pain relief is not symptom impact.** Armour's 0 to 10 scale measures how
+   much a strategy relieved pain. It does not measure how disruptive a symptom
+   is. The two must not be mixed in the Support Score formula.
