@@ -72,3 +72,8 @@ upskill/*.md
 .agents/**/node_modules/
 .agents/**/*.log
 .agents/usage/
+
+# MaternalGrid: secrets and local Claude brief cache
+.env
+.streamlit/secrets.toml
+data/brief_cache.json
