@@ -10,6 +10,7 @@ The product specification and technical roadmap is [`../MaternalGrid_DEMO.md`](.
 | Path | What it is |
 |---|---|
 | `MaternalGrid_Dashboard.html` | **The demo.** Single self-contained file — open it in a browser, no server |
+| `DEMO_SCRIPT.md` | Timed 8-minute presenter script (2 talk / 4 demo / 2 Q&A) with click steps |
 | `build_dashboard.py` + `dashboard.css` | Source the dashboard is generated from |
 | `data/maternalgrid_data.json` | 159 counties + 72 facilities + verified baseline (35 KB) |
 | `data/county_cells.json` | Voronoi county polygons derived from the centroids |
