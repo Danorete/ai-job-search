@@ -72,10 +72,28 @@ Version 1.x proved the model in a browser-only prototype built in Google AI Stud
 
 Georgia ranks among the worst states in the nation for maternal mortality. The structural driver is geographic: obstetric capacity has withdrawn from rural Georgia faster than any mechanism has replaced it.
 
-- **Over 55% of Georgia's 159 counties have no delivering hospital.** In the platform's working baseline, 106 of 159 counties (66.7%) have no active delivering facility within their own borders.
-- **44% of counties have zero practicing OB/GYN providers** — 70 of 159 counties in the baseline dataset.
-- **~295,666 women aged 15–44 live beyond the 30-minute modeled access threshold** to a delivering facility.
-- The **30-minute threshold** is not arbitrary. It is the operational standard for emergency obstetric transport; beyond it, the risk of adverse outcomes in postpartum hemorrhage, placental abruption, cord prolapse, and unattended preterm labor rises sharply, because those emergencies are measured in minutes.
+> **These are three distinct metrics and must not be used interchangeably.** Earlier drafts conflated them; see §13.1.
+
+| Metric | Figure | Share of 159 | Source |
+|---|---|---|---|
+| Counties with **no birthing facility** | **108** | 67.9% | GA Dept. of Public Health, 2025 |
+| Counties in **OB/GYN shortage** | **82** | 51.6% | GA Board of Health Care Workforce, 2024 |
+| Counties classified **Maternity Care Desert** | **70** | 44.0% | March of Dimes 2026 — *verified against loaded data* |
+
+- **Statewide births are falling, and falling fastest where access is worst.** Georgia recorded 131,333 births in 2015 and 126,304 in 2024 (−3.8%). Split by access tier, desert counties averaged **−4.0%** against **+0.6%** for non-desert counties. This is a compounding loop: declining volume undermines the financial viability of a rural L&D unit, which drives closure, which expands the desert.
+- **Desert counties hold 9,880 of 126,304 annual births (7.8%)** — median 120 births per county against 579 elsewhere. The crisis is a small share of total births spread across a large share of the state's land area, which is precisely why per-capita reasoning misses it.
+- **Maternal mortality.** Georgia DPH's Maternal Mortality Review Committee recorded **141 pregnancy-related deaths in 2020–2022, a ratio of 37.9 per 100,000 live births**, of which **87% had at least some chance of being prevented**. A separate CDC/DPH maternal mortality figure of 66.3 per 100,000 (2024) uses a different definition and period — quote one or the other, never both as though they measured the same thing.
+
+**On the 30-minute threshold.** The platform's 30-minute boundary is an operational planning threshold, not a published clinical cut-point. The peer-reviewed evidence is tiered differently, and the Impact Statement's clinical slot (§5.2) should cite these rather than assert the 30-minute figure:
+
+| Travel burden | Clinical consequence | Source |
+|---|---|---|
+| 31–60 minutes | **1.96×** adjusted risk of unplanned out-of-hospital birth | Swedish Pregnancy Register cohort |
+| > 60 minutes | **3.19×** adjusted risk of unplanned out-of-hospital birth | Swedish Pregnancy Register cohort |
+| > 80 km (~50 mi) | **+53%** adjusted risk of severe maternal morbidity (aRR 1.53) | *Obstetrics & Gynecology*, 2022 |
+| Every doubling of distance | **−5%** likelihood of timely prenatal care initiation | Medicaid enrollee spatial analysis |
+
+30 minutes remains defensible as a conservative operational line — it sits below the first measured risk tier — but the spec should say that explicitly rather than implying a clinical standard exists at exactly 30 minutes.
 
 ### 2.2 The decision-making gap
 
@@ -1634,12 +1652,28 @@ SELECT create_hypertable('audit.ai_interaction', 'occurred_at',
 
 **Baseline metrics** (no scenario applied):
 
-| Metric | Value | Benchmark |
+| Metric | Value | Status | Source |
+|---|---|---|---|
+| Counties with no birthing facility | 108 / 159 (67.9%) | sourced, not yet reproducible | GA DPH 2025 |
+| Counties in OB/GYN shortage | 82 / 159 (51.6%) | sourced, not yet reproducible | GA Board of Health Care Workforce 2024 |
+| Counties classified Maternity Care Desert | 70 / 159 (44.0%) | **verified against loaded data** | March of Dimes 2026 |
+| Statewide births, 2024 | 126,304 | **verified against loaded data** | GDPH OASIS |
+| Statewide births, 2015 | 131,333 | **verified against loaded data** | GDPH OASIS |
+| Births in desert counties, 2024 | 9,880 (7.8%) | **verified against loaded data** | OASIS × MoD |
+| Women 15–44 beyond 30-min access | *unverified* | blocked — needs `women_15_44.csv` | Census ACS B01001 |
+| Births-weighted average travel time | *unverified* | blocked — needs facility coordinates | derived |
+
+### 13.1 Correction log
+
+Three figures carried forward from the prototype write-up did not survive contact with the source data and have been corrected above:
+
+| Was | Now | What happened |
 |---|---|---|
-| Counties with no active delivering facility | 106 / 159 (66.7%) | MoD 64.8% |
-| Counties with zero OB providers | 70 / 159 (44.0%) | MoD 44.0% |
-| Women 15–44 beyond 30-min access | 295,666 | — |
-| Births-weighted average travel time | 12.6 min | — |
+| "106 / 159 (66.7%) no active delivering facility" | 108 / 159 (67.9%) | 106 matches no published source. The GA DPH 2025 figure is 108; the MoD 2026 benchmark is 64.8% (~103). The prototype appears to have quoted its own computed output as though it were sourced. |
+| "70 / 159 (44.0%) zero OB providers" | 82 / 159 (51.6%) OB/GYN shortage | **70 is the MoD maternity-care-desert count, mislabelled as a provider count.** The two are different metrics. The prototype's own summary already carried the correct 51.6% figure elsewhere, unreconciled. |
+| "Over 55% of counties have no delivering hospital" | removed | Internally inconsistent with the same document's 66.7% claim. |
+
+**Rule going forward:** a figure enters this document only with a named source and a year, or marked *unverified*. The verification gate in `005_verify.sql` asserts the reproducible ones on every load.
 
 **Provenance rule.** Every asset carries `source_citation` and `data_vintage` at the row level. Vintage participates in the cache key (Section 9.6), so refreshing a dataset invalidates dependent results automatically.
 
