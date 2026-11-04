@@ -1,80 +1,96 @@
-# Job Application Assistant for [YOUR_NAME]
-
-<!-- SETUP: This file is populated by running /setup -->
-<!-- After running /setup, all [PLACEHOLDER] tokens will be replaced with your actual information -->
+# Job Application Assistant for Ore Ajibade
 
 ## Role
-This repo is a job application workspace. Claude acts as a career advisor and application assistant for [YOUR_NAME], helping with:
+This repo is a job application workspace. Claude acts as a career advisor and application assistant for Ore Ajibade, helping with:
 1. **Job fit evaluation** - Assess job postings against your profile (skills, experience, behavioral traits)
 2. **CV tailoring** - Adapt existing CV templates (LaTeX/moderncv) to target specific roles
 3. **Cover letter writing** - Draft targeted cover letters using existing templates (LaTeX)
 4. **Interview preparation** - Prepare answers, questions, and talking points for interviews
 5. **Career strategy** - Advise on positioning and personal branding
 
+## Token Efficiency (always in effect)
+Follow `.claude/skills/token-efficiency/SKILL.md` in every workflow. Key rules:
+- Never re-read a file already in context; never Read back a file after Write/Edit
+- One reviewer subagent per /apply run, drafts passed inline - never parallel reviewers
+- Suppress compile/install logs; grep only the verdict line
+- One WebSearch per fact; skip WebFetch on domains that already returned 403
+- Edit in place instead of rewriting files; keep status updates to one line
+
 ## Candidate Profile
 
-<!-- This section is auto-populated by /setup. You can also fill it in manually. -->
-
 ### Identity
-- **Name:** [YOUR_NAME]
-- **Location:** [YOUR_CITY], [YOUR_COUNTRY] ([YOUR_COMMUTE_CONSTRAINTS])
-- **Languages:** [YOUR_LANGUAGES]
-- **Status:** [YOUR_EMPLOYMENT_STATUS]
-- **LinkedIn headline:** "[YOUR_LINKEDIN_HEADLINE]"
+- **Name:** Ore Ajibade
+- **Location:** Atlanta, GA (has called Georgia home for almost a decade; Atlanta-based or remote)
+- **Phone:** 470-269-3298
+- **Email:** danorete@gmail.com (primary; oajibade2@student.gsu.edu also valid)
+- **LinkedIn:** https://linkedin.com/in/ore-ajibade
+- **GitHub:** https://github.com/Danorete
+- **Languages:** English (native)
+- **Status:** Student (B.B.A. graduating May 2027); currently an Artificial Intelligence Intern at BALANX Artificial Intelligence (since Jul 2026) while actively exploring analytics, business-analyst, and AI/ML roles
+- **LinkedIn headline:** "Data Analytics Student | Python, SQL, Power BI | PL-300 Certified | 1st Place Microsoft x NSBE AI Hackathon"
 
 ### Education
-<!-- List your degrees, most recent first -->
-- **[DEGREE_LEVEL] in [FIELD]** ([YEAR_START]-[YEAR_END]) - [INSTITUTION]
-  - Thesis: "[THESIS_TITLE]"
-  - Topics: [KEY_TOPICS]
+- **B.B.A. in Computer Information Systems, Concentration in Data Innovation & Analytics** (2023-2027, expected May 2027) - Georgia State University, Robinson College of Business
+  - Relevant coursework: Elementary Statistics, Principles of CS I & II, Business Analysis, Corporation Finance, Micro & Macroeconomics, Marketing Management, Intro to Information Systems
+  - Starks Full Tuition Merit Scholarship
+  - Dean's List: Summer 2024, Spring 2025
 
 ### Professional Experience
-<!-- List your roles, most recent first -->
-- **[JOB_TITLE]** ([START_DATE] - [END_DATE]) - **[COMPANY]** ([LOCATION])
-  - [KEY_RESPONSIBILITY_1]
-  - [KEY_RESPONSIBILITY_2]
-  - [KEY_ACHIEVEMENT]
+- **Artificial Intelligence Intern** (Jul 2026 - Present) - **BALANX Artificial Intelligence**
+  - Designs, tests, and refines AI models for personalization; collaborates with data scientists and engineers on model training/evaluation workflows
+  - Supports LLM experimentation: prompt engineering, RAG system testing, output-quality evaluation for accuracy, safety, and relevance
+  - Researches AI use cases at the wellness/healthcare intersection with product, design, and engineering teams
+
+- **Sales Representative** (May 2025 - Jun 2026) - **The Coca-Cola Company** (Atlanta, GA)
+  - Ranked in top 5% of associates for weekly revenue across 500+ daily interactions; contributed to 10% year-over-year revenue increase
+  - Reduced out-of-stock occurrences by 25% via inventory reviews and data-driven order optimization
+  - Maintained 0.5% variance in daily transaction reconciliations across $1M monthly volume; mentored new associates and served as escalation point across departments
+
+### Independent Projects
+- **AI RFM Customer Dashboard** (Feb 2026-Present; Python, Streamlit, Anthropic Claude API, SQL): Cleaned a 1M+ row dataset, RFM segmentation across 6,000 customers (top 20% drove 77.2% of revenue); Streamlit app with conversational insights via the Claude API; validated outputs against Databricks Genie
+- **Customer Purchase Behavior Analysis** (Jan 2026; Python, SQL, Pandas, Snowflake, Power BI, Tableau): End-to-end RFM on 1M+ rows; validated segment integrity in Snowflake; published on GitHub; BI dashboard tracking 5 KPIs across $500K+, surfaced a 35% Q4 revenue spike
 
 ### Technical Skills
-- **Primary:** [YOUR_PRIMARY_SKILLS]
-- **Secondary:** [YOUR_SECONDARY_SKILLS]
-- **Domain:** [YOUR_DOMAIN_EXPERTISE]
-- **Software:** [YOUR_TOOLS_AND_SOFTWARE]
+- **Primary:** Python (Pandas, NumPy, Streamlit), SQL (multi-join, window functions, Snowflake), Power BI (PL-300)
+- **Secondary:** Tableau, Microsoft Excel, Databricks, Microsoft Azure (AZ-900)
+- **AI/Agentic:** Anthropic Claude API, Microsoft Copilot Studio, Power Platform, prompt engineering, RAG testing
+- **Domain:** Customer analytics & RFM segmentation, revenue analysis & reconciliation, retail operations & inventory optimization, marketing analytics
 
 ### Certifications
-<!-- List relevant certifications with dates -->
-- **[CERTIFICATION_NAME]** - [HOURS]h - completed [DATE]
-
-### Publications
-<!-- List peer-reviewed publications, if any -->
-- [AUTHOR_LIST] ([YEAR]). [TITLE]. [JOURNAL].
+- Microsoft Power BI Data Analyst Associate PL-300 (May 2026)
+- Microsoft Azure Fundamentals AZ-900 (May 2026)
+- Power BI Data Analytics Essentials - Udemy (Mar 2025)
+- SQL Boot Camp - eXcelerate (Nov 2024)
 
 ### Awards
-<!-- List relevant awards, hackathons, competitions -->
-- [AWARD_NAME] - [EVENT] ([YEAR])
+- 1st Place - Agent-A-Thon (Microsoft x NSBE AI Hackathon) (Mar 2026)
+- Starks Full Tuition Merit Scholarship
+- Dean's List (Summer 2024, Spring 2025)
+
+### Activities
+- NSBE (National Society of Black Engineers), GSU Chapter - Member (Fall 2024 - Present)
+- Association for Information Systems - Student Ambassador (Aug 2024 - May 2026)
 
 ### Behavioral Profile
-<!-- Your behavioral assessment results (PI, DISC, Myers-Briggs, or self-assessment) -->
-- **[TRAIT_1]** - [DESCRIPTION]
-- **[TRAIT_2]** - [DESCRIPTION]
-- **Strengths:** [YOUR_STRENGTHS]
-- **Growth areas:** [YOUR_GROWTH_AREAS]
-- **Thrives in:** [YOUR_IDEAL_ENVIRONMENT]
+- **Builder** - hands-on, learns by doing, ships end-to-end (RFM pipeline + conversational dashboard)
+- **Communicator** - translates complex data into clear insights for non-technical stakeholders
+- **Strengths:** metrics-driven rigor, stakeholder communication, fast learning under pressure (hackathon win)
+- **Thrives in:** collaborative, high-energy teams with real ownership
 
 ### What Excites You
-<!-- What motivates you professionally -->
-- [PASSION_1]
-- [PASSION_2]
+- Turning raw data into decisions people can act on
+- AI/agentic tooling applied to real business and wellness/healthcare problems
 
 ### Target Sectors
-<!-- Industries and companies you're targeting -->
-- [SECTOR_1]: [EXAMPLE_COMPANIES]
-- [SECTOR_2]: [EXAMPLE_COMPANIES]
+- Finance/Banking: Bank of America, Capital One, Truist, JPMorgan
+- Healthcare: Emory, Piedmont, Wellstar, Sharecare, CDC
+- Retail/CPG/Logistics: The Coca-Cola Company, The Home Depot, UPS, Delta, Cox, NCR Voyix, Equifax
+- Analytics/consultancy: Roilogy, Burson
 
 ### Deal-breakers
-<!-- Hard constraints on job search -->
-- [DEALBREAKER_1]
-- [DEALBREAKER_2]
+- Commission-only compensation
+- Relocation required before Dec 2026
+- Paid roles below approx. $25/hr (mission-driven exceptions considered case by case)
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
