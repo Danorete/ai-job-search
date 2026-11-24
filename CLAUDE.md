@@ -82,6 +82,14 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 - `.claude/skills/` - AI skill definitions for the application workflow
 - `.agents/skills/` - Job search CLI tools
 
+## Job Posting Freshness Rule
+When pulling jobs from email alerts, job boards, or scrapers, and before tailoring any CV or cover letter:
+- Only include postings **first posted within the last 14 days**, judged by the posting date on the company's careers site or ATS (Workday, Greenhouse, iCIMS, etc.), not the date of the alert email.
+- Drop anything older, including listings marked "Posted 30+ Days Ago". A repost counts from its original date when the site shows it.
+- If no posting date can be found, label it "Date not verified" and use it only to fill out a list that is short of fresh roles, ranked below dated ones.
+- Exception: a posting the user names or pastes directly is always evaluated.
+- Show each posting's date in any ranked list.
+
 ## Workflow for New Job Applications
 1. User provides a job posting (URL or text)
 2. **Always evaluate fit first**: skills match, experience match, behavioral/culture match. Present this assessment to the user before proceeding.
