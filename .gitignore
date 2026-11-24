@@ -72,3 +72,6 @@ upskill/*.md
 .agents/**/node_modules/
 .agents/**/*.log
 .agents/usage/
+
+# Personal application materials (contain contact details) - kept local
+applications/
